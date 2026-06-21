@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .app {
+            background: #1e293b;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 480px;
+            border: 1px solid #334155;
+            text-align: center;
+        }
+
+        .heading {
+            color: #38bdf8;
+            font-size: 2.25rem;
+            letter-spacing: -0.5px;
+            margin-bottom: 25px;
+        }
+
+        #city {
+            height: 54px;
+            width: 100%;
+            border-radius: 10px;
+            color: #ffffff;
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            font-size: 1rem;
+            padding: 0 16px;
+            outline: none;
+            transition: border-color 0.2s;
+            display: block;
+            margin: 0 auto;
+        }
+
+        #city:focus {
+            border-color: #38bdf8;
+        }
+
+        #city::placeholder {
+            color: #475569;
+        }
+
+        #btn {
+            background: #2563eb;
+            width: 100%;
+            height: 54px;
+            border-radius: 10px;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 14px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            display: block;
+        }
+
+        #btn:hover {
+            background-color: #3b82f6;
+        }
+
+        #btn:active {
+            transform: scale(0.98);
+        }
+
+        .error {
+            display: block;
+            margin-top: 14px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: left;
+            color: #ef4444;
+        }
+
+        #result {
+            background-color: #0f172a;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 24px;
+            font-size: 1.1rem;
+            line-height: 2;
+            border: 1px solid #1e293b;
+            font-weight: 500;
+            text-align: left;
+        }
+
+        #result img {
+            width: 100px;
+            height: 100px;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <h1 class="heading">Weather App</h1>
+        <input type="text" name="name" id="city" placeholder="Enter a City" required>
+        <button id="btn">Check Weather</button>
+        <span class="error" aria-live="polite"></span>
+        <h2 id="result"></h2>
+    </div>
+
+    <script>
+        document.getElementById("btn").onclick = function () {
+            let city = document.getElementById("city").value;
+            let spanerror = document.querySelector(".error");
+            spanerror.style.color = "red";
+            if (!city) {
+                spanerror.textContent = "Please Select a city";
+                return;
+            } else {
+                spanerror.textContent = ""
+            }
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=ba9450b09148dc62bf9ac7fa0762a9cb&units=metric`;
+            document.getElementById("result").innerHTML = "⏳ Loading...";
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById("result").innerHTML = `
+                    <img src = "https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="Weather Icon">
+                    <h2>${data.name}</h2>
+                     🌡️ Temp : ${data.main.temp}°C <br>
+                     🤒 Feels Like : ${data.main.feels_like}°C <br>
+                     🌥️ Description : ${data.weather[0].description} <br>
+                    `;
+                });
+        }
+    </script>
+</body>
+
+</html>
