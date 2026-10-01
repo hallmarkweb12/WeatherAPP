@@ -118,6 +118,14 @@
 </head>
 
 <body>
+    <!-- Vercel Web Analytics -->
+    <script>
+        window.va = window.va || function () { 
+            (window.vaq = window.vaq || []).push(arguments); 
+        };
+    </script>
+    <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
+
     <div class="app">
         <h1 class="heading">Weather App</h1>
         <input type="text" name="name" id="city" placeholder="Enter a City" required>
